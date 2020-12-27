@@ -166,6 +166,11 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 		volume = 100;
 	
 	volume = 63 - volume * 63/100;
+
+#if !defined (__sh__)
+	if (volume == 63)
+		volume = 255;
+#endif
 	
 #if !defined (USE_OPENGL) && !defined (PLATFORM_HYPERCUBE)
 	unsigned char vol = volume;
