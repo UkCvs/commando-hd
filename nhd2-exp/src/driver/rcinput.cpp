@@ -853,7 +853,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_DEBUG, "got event from high-pri pipe %x %x\n", *msg, *data );
+			dprintf(DEBUG_DEBUG, "got event from high-pri pipe %lx %lx\n", *msg, *data );
 
 			return;
 		}
@@ -1072,17 +1072,19 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 						{
 							case CSectionsdClient::EVT_TIMESET:
 								{
+/*
 									struct timeval tv;
 									gettimeofday( &tv, NULL );
 									int64_t timeOld = (int64_t) tv.tv_usec + (int64_t)((int64_t) tv.tv_sec * (int64_t) 1000000);
 
 									stime((time_t*) p);
+                                    //utime((time_t*) p);
 
 									gettimeofday( &tv, NULL );
 									int64_t timeNew = (int64_t) tv.tv_usec + (int64_t)((int64_t) tv.tv_sec * (int64_t) 1000000);
 
 									delete[] p;
-									p= new unsigned char[ sizeof(int64_t) ];
+									p = new unsigned char[ sizeof(int64_t) ];
 									*(int64_t*) p = timeNew - timeOld;
 
 									if ((int64_t)last_keypress > *(int64_t*)p)
@@ -1096,6 +1098,13 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 									*msg          = NeutrinoMessages::EVT_TIMESET;
 									*data         = (neutrino_msg_data_t) p;
 									dont_delete_p = true;
+*/
+                                    if ((int64_t)last_keypress > *(int64_t*)p)
+									last_keypress += *(int64_t *)p;
+
+								    *msg          = NeutrinoMessages::EVT_TIMESET;
+								    *data         = (neutrino_msg_data_t) p;
+								    dont_delete_p = true;
 								}
 								break;
 								
@@ -1416,7 +1425,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 				if(ret != sizeof(t_input_event)) 
 				{
-					dprintf(DEBUG_INFO, "CRCInput::getMsg_us: read event %d != %d\n", ret, sizeof(t_input_event) );	
+					dprintf(DEBUG_INFO, "CRCInput::getMsg_us: read event %d != %ld\n", ret, sizeof(t_input_event) );	
 					continue;
 				}
 								

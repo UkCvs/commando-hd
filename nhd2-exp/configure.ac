@@ -166,22 +166,22 @@ AX_SWIG_ENABLE_CXX
 #AX_LUA_HEADERS
 #AX_LUA_LIBS
 
-#PKG_CHECK_MODULES(LUA, lua)
+PKG_CHECK_MODULES(LUA, lua5.2)
 #AC_DEFINE(ENABLE_LUA, 1, [include Lua support])
-	PKG_CHECK_MODULES(LUA, lua, LLUA="yes", LLUA="no")
-	PKG_CHECK_MODULES(luajit, luajit, LLUAJIT="yes", LLUAJIT="no")
-		if test "x$LLUAJIT" = "xyes"; then
-			LUA_LIBS="-lluajit-5.1"
-			AC_DEFINE(LUA_COMPAT_5_2, 1, [needed for build with lua 5.1])
-		elif test "x$LLUA" = "xyes"; then
-			LUA_LIBS="-llua"
-			AC_DEFINE(LUA_COMPAT_5_2, 0, [needed for build with lua 5.1])
-		else
-			echo "lualib not found, assuming static lua in linker path..."
-			LUA_LIBS="-llua -ldl"
-			AC_DEFINE(STATIC_LUAPOSIX, 1, [Define to 1 for static lua build.])
-			AC_DEFINE(LUA_COMPAT_5_2, 0, [needed for build with lua 5.1])
-		fi
+#	PKG_CHECK_MODULES(LUA, lua, LLUA="yes", LLUA="no")
+#	PKG_CHECK_MODULES(luajit, luajit, LLUAJIT="yes", LLUAJIT="no")
+#		if test "x$LLUAJIT" = "xyes"; then
+#			LUA_LIBS="-lluajit-5.1"
+#			AC_DEFINE(LUA_COMPAT_5_2, 1, [needed for build with lua 5.1])
+#		elif test "x$LLUA" = "xyes"; then
+#			LUA_LIBS="-llua"
+#			AC_DEFINE(LUA_COMPAT_5_2, 0, [needed for build with lua 5.1])
+#		else
+#			echo "lualib not found, assuming static lua in linker path..."
+#			LUA_LIBS="-llua -ldl"
+#			AC_DEFINE(STATIC_LUAPOSIX, 1, [Define to 1 for static lua build.])
+#			AC_DEFINE(LUA_COMPAT_5_2, 0, [needed for build with lua 5.1])
+#		fi
 
 AC_DEFINE(ENABLE_LUA,1,[include lua interface support])
 fi
